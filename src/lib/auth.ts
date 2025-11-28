@@ -7,7 +7,7 @@ import { compare } from "bcryptjs";
 const isProd = process.env.NODE_ENV === "production";
 
 export const authOptions: NextAuthOptions = {
-  trustHost: true,
+  // trustHost: true,
   session: { strategy: "jwt", maxAge: 60 * 60 * 24 * 7 }, // 7 días
   pages: { signIn: "/auth/login" },
   cookies: {
