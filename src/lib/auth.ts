@@ -5,6 +5,12 @@ import { prisma } from "@/lib/db";
 import { compare } from "bcryptjs";
 
 const isProd = process.env.NODE_ENV === "production";
+interface AppUser {
+  id: string;
+  name: string | null;
+  email: string;
+  role: string;
+}
 
 export const authOptions: NextAuthOptions = {
   // trustHost: true,
@@ -45,14 +51,19 @@ export const authOptions: NextAuthOptions = {
   ],
   callbacks: {
     async jwt({ token, user }) {
-      if (user) token.role = (user as any).role;
+      if (user) {
+        const u = user as AppUser;
+        token.role = u.role;
+      }
+
       return token;
     },
     async session({ session, token }) {
       if (session.user) {
-        (session.user as any).id = token.sub;
-        (session.user as any).role = token.role;
+        session.user.id = token.sub!;
+        session.user.role = token.role as string;
       }
+
       return session;
     },
   },
