@@ -51,19 +51,17 @@ export const authOptions: NextAuthOptions = {
   ],
   callbacks: {
     async jwt({ token, user }) {
-      if (user) {
-        const u = user as AppUser;
-        token.role = u.role;
-      }
-
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      if (user) token.role = (user as any).role;
       return token;
     },
     async session({ session, token }) {
       if (session.user) {
-        session.user.id = token.sub!;
-        session.user.role = token.role as string;
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        (session.user as any).id = token.sub;
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        (session.user as any).role = token.role;
       }
-
       return session;
     },
   },
