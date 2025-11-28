@@ -1,0 +1,4 @@
+src/lib/auth.ts
+Usa NEXTAUTH_URL con https en prod.
+En prod, activa HSTS/headers (siguiente punto).
+
